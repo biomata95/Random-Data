@@ -1,0 +1,37 @@
+import csv # biblioteca para manipulação de csv
+import matplotlib.pyplot as plt # importação da biblioteca para formação de gráficos
+import math
+from statistics import stdev
+
+# 7 valor
+# 8 volume
+
+chave = [] # codigo-produto
+valor = []  # valor do produto
+media = 0 # media da razao valor e produto
+
+
+with open('train.csv', newline='') as csvfile: # Abrir arquivo CSV
+  spamreader = csv.reader(csvfile, delimiter=';') # Delimitador do CSV
+  contador_cidades = 0
+  somatoria_valor = 0
+  potencia = 0
+  for row in spamreader: # loop para percorrer linhas do csv
+    aux_estado = row[4]
+    if(aux_estado[0:2]=='35'):
+      if(row[0]!='Ano' and ):
+        valor.append(float(row[7])/float(row[8])) # Cálculo da razão valor e produto
+        chave.append(str(row[4]+"-"+str(row[6]))) # Concatenação codigo da cidade e produto
+        somatoria_valor = somatoria_valor+float(row[7])/float(row[8])
+        contador_cidades = contador_cidades+1
+
+desvio_padrao = stdev(valor) # Cálculo do desvio padrao
+media = somatoria_valor/contador_cidades
+print(desvio_padrao)
+print(media)
+'''
+plt.plot(chave,valor)
+plt.ylabel('Valor/Volume')
+plt.xlabel('Código-Produto')
+plt.show()
+'''
