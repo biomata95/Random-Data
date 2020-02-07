@@ -1,0 +1,22 @@
+
+import pandas as pd
+#import csv # biblioteca para manipulação de csv
+import matplotlib.pyplot as plt # importação da biblioteca para formação de gráficos
+import math
+from statistics import stdev
+
+# 7 valor
+# 8 volume
+
+chave = [] # codigo-produto
+valor = []  # valor do produto
+media = 0 # media da razao valor e produto
+semanas = [] # arranjo de semanas
+
+# Preview the first 5 lines of the loaded data 
+# print(df['Ano'])
+
+df = pd.read_csv('train.csv',sep=';')
+for index, row in df.iterrows():
+  #aux_estado = str(row['Código IBGE'])
+  print(row['Código IBGE'])
