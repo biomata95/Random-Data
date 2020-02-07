@@ -1,0 +1,26 @@
+import pandas as pd
+import csv # biblioteca para manipulação de csv
+import matplotlib.pyplot as plt # importação da biblioteca para formação de gráficos
+import math
+from statistics import stdev
+import numpy as np
+
+
+def split_first(ibge):
+  return (str(ibge)[:1])
+
+
+chave = [] # codigo-produto
+valor = []  # valor do produto
+media = 0 # media da razao valor e produto
+
+df = pd.read_csv('train.csv',sep=';') # Leitura CSV
+df['Razao'] = df.eval('Valor/Volume') # Eh criada uma nova coluna com a razao do valor sobre o volume
+df["Regiao"] = df.apply(lambda row: split_first(row["Código IBGE"]), axis=1)
+df.groupby(['Produto','Regiao','Ano','Semana'])[['Razao']].sum()
+#df.groupby('Regiao')[['Código IBGE']].nunique()
+#df['NCidades'] = df.app
+#df.groupby(['Regiao','Produto'])
+#df.count()
+#df.groupby(['Produto','Regiao','Ano','Semana'])[['Razao']].sum()
+#df.head
