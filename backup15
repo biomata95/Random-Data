@@ -1,0 +1,31 @@
+import pandas as pd
+import csv # biblioteca para manipulação de csv
+import matplotlib.pyplot as plt # importação da biblioteca para formação de gráficos
+import math
+from statistics import stdev
+import numpy as np
+
+
+def split_first(ibge):
+  return (str(ibge)[:1])
+
+def proporcao(valor, volume, ibge):
+  return ((valor/volume)/ibge)
+
+
+chave = [] # codigo-produto
+valor = []  # valor do produto
+media = 0 # media da razao valor e produto
+
+df = pd.read_csv('train.csv',sep=';') # Leitura CSV
+df["Regiao"] = df.apply(lambda row: split_first(row["Código IBGE"]), axis=1)
+temp = df.groupby('Regiao')[['Código IBGE']].nunique().reset_index()
+df_merge = pd.merge(left=df,right=temp,on='Regiao',how='inner')
+aux['Razao'] = aux.eval('Valor/Volume') # Eh criada uma nova coluna com a razao do valor sobre o volume
+aux.groupby(['Produto','Regiao','Ano','Semana'])[['Razao']].sum()
+df_merge["proporcao"] = df_merge.apply(lambda row: proporcao(row["Valor"], row["Volume"], row["Código IBGE_y"]), axis=1)
+df_merge = df_merge.groupby(['Produto','Regiao','Ano','Semana'])[['proporcao']].sum()
+print(df_merge['proporcao'].min())
+print(df_merge['proporcao'].max())
+print(df_merge)
+df_merge.query("Produto == 'Abacate' & Regiao=='1'")
