@@ -1,0 +1,46 @@
+import pandas as pd
+import csv # biblioteca para manipulação de csv
+import matplotlib.pyplot as plt # importação da biblioteca para formação de gráficos
+import math
+from statistics import stdev
+import numpy as np
+
+# 7 valor
+# 8 volume
+
+chave = [] # codigo-produto
+valor = []  # valor do produto
+media = 0 # media da razao valor e produto
+
+df = pd.read_csv('train.csv',sep=';') # Leitura CSV
+df['razao'] = df.eval('Valor/Volume') # Eh criada uma nova coluna com a razao do valor sobre o volume
+df.groupby(['Ano', 'Código IBGE'], as_index=False).agg({'Valor':np.sum}) # Agrupamento dos valores por ano e Código do IBGE
+df.merge(base2, how='left', on=[''])
+
+'''
+for index, row in df.iterrows():
+  print(row['Código IBGE'])
+'''
+'''
+  aux_estado = str(row['Código IBGE'])
+  contador_cidades = 0
+  somatoria_valor = 0
+  potencia = 0
+  if(aux_estado[0:2]=='35'):
+    valor.append(float(row[7])/float(row[8])) # Cálculo da razão valor e volume
+    chave.append(str(row[4]+"-"+str(row[6]))) # Concatenação codigo da cidade e produto
+    somatoria_valor = somatoria_valor+float(row[7])/float(row[8])
+    contador_cidades = contador_cidades+1
+'''
+'''
+desvio_padrao = stdev(valor) # Cálculo do desvio padrao
+media = somatoria_valor/contador_cidades
+print(desvio_padrao)
+print(media)
+'''
+'''
+plt.plot(chave,valor)
+plt.ylabel('Valor/Volume')
+plt.xlabel('Código-Produto')
+plt.show()
+'''
