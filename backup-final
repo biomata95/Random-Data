@@ -1,0 +1,31 @@
+import pandas as pd
+import matplotlib.pyplot as plt # importação da biblioteca para formação de gráficos
+import math
+from statistics import stdev
+import numpy as np
+
+# Retorna o primeiro digito do código do IBGE
+def split_first(ibge):
+  return (str(ibge)[:1])
+
+# Função para encontrar a proporção entre o valor/volume e o numero de cidades da região
+def proporcao(valor, volume, ibge):
+  return ((valor/volume)/ibge)
+
+
+chave = [] # codigo-produto
+valor = []  # valor do produto
+media = 0 # media da razao valor e produto
+
+df = pd.read_csv('train.csv',sep=';') # Leitura do csv e atribuição do dataframe
+df["Regiao"] = df.apply(lambda row: split_first(row["Código IBGE"]), axis=1) # Criação da coluna Região baseada pelo primeiro digito do código do IBGE
+temp = df.groupby('Regiao')[['Código IBGE']].nunique().reset_index() # Temporario para agrupar os códigos do IBGE
+df_merge = pd.merge(left=df,right=temp,on='Regiao',how='inner') # Inner join entre o dataframe e o temporario
+aux['Razao'] = aux.eval('Valor/Volume') # Eh criada uma nova coluna com a razao do valor sobre o volume
+aux.groupby(['Produto','Regiao','Ano','Semana'])[['Razao']].sum() # Somatório do dataframe agrupado
+df_merge["proporcao"] = df_merge.apply(lambda row: proporcao(row["Valor"], row["Volume"], row["Código IBGE_y"]), axis=1) # Criação da coluna proporção, obtida pela razão entre valor e volume
+df_merge = df_merge.groupby(['Produto','Regiao','Ano','Semana'])[['proporcao']].sum() # Somatoria das proporções agrupadas
+abacate_1 = df_merge.query("Produto == 'Abacate' & Regiao=='1'") # Foram selecionados apenas os dados do abacate e região 1, considerada como região Norte do país
+aux_array = np.arange(130) # Criação do arranjo de semanas
+plt.plot(aux_array,abacate_1['proporcao'], 'ro') # Criação do gráfico
+plt.show() # Ilustração do gráfico
